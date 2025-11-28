@@ -2,8 +2,9 @@
 class Database {
     private $host = "localhost";
     private $db_name = "inventory_system";
-    private $username = "root";
-    private $password = "";    
+    private $username = "root"; 
+    private $password = "";     
+
     public $conn;
 
     public function getConnection() {
