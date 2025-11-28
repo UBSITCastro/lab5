@@ -1,7 +1,5 @@
 <?php
-// logs.php
 
-// Database connection
 $host = "localhost";
 $dbname = "inventory_system";
 $username = "root";
@@ -14,11 +12,11 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Optional date filtering
+
 $start_date = $_GET['start_date'] ?? '';
 $end_date = $_GET['end_date'] ?? '';
 
-$query = "SELECT * FROM logs";
+$query = "SELECT * FROM logs_table";
 $params = [];
 
 if ($start_date && $end_date) {
@@ -39,39 +37,47 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Activity Logs</title>
-    <style>
-        table { border-collapse: collapse; width: 90%; margin: 20px auto; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        form { text-align: center; margin-top: 20px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2 style="text-align:center;">Activity Logs</h2>
+    <h2>Activity Logs</h2>
 
+  
     <form method="get" action="">
         <label>Start Date: <input type="date" name="start_date" value="<?= htmlspecialchars($start_date) ?>"></label>
         <label>End Date: <input type="date" name="end_date" value="<?= htmlspecialchars($end_date) ?>"></label>
         <button type="submit">Filter</button>
-        <a href="logs.php">Reset</a>
+        <button type="button" onclick="window.location.href='logs.php'">Reset</button>
     </form>
 
+   
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Action</th>
-            <th>Description</th>
-            <th>Date/Time</th>
-        </tr>
-        <?php foreach ($logs as $log): ?>
+        <thead>
             <tr>
-                <td><?= htmlspecialchars($log['id']) ?></td>
-                <td><?= htmlspecialchars($log['action']) ?></td>
-                <td><?= htmlspecialchars($log['description']) ?></td>
-                <td><?= htmlspecialchars($log['timestamp']) ?></td>
+                <th>ID</th>
+                <th>Action</th>
+                <th>Description</th>
+                <th>Date/Time</th>
             </tr>
-        <?php endforeach; ?>
+        </thead>
+        <tbody>
+            <?php if(count($logs) > 0): ?>
+                <?php foreach ($logs as $log): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($log['id']) ?></td>
+                        <td><?= htmlspecialchars($log['action']) ?></td>
+                        <td><?= htmlspecialchars($log['description']) ?></td>
+                        <td><?= htmlspecialchars($log['timestamp']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="4" style="color:#f39c12;">No logs found.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
     </table>
 </body>
 </html>
