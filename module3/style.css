@@ -1,0 +1,137 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Dark background */
+body {
+  background: #1e1e2f;
+  color: #e0e0e0;
+  padding: 20px;
+}
+
+/* Page title */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #f5f5f5;
+  font-weight: 700;
+}
+
+/* Filter section */
+label {
+  font-weight: 600;
+  margin-right: 10px;
+  color: #ddd;
+}
+
+select {
+  padding: 6px 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #2b2b3c;
+  color: #f0f0f0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+select:focus {
+  border-color: #3498db;
+  background: #33334a;
+  outline: none;
+}
+
+/* Summary panel */
+.summary {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 20px 0;
+}
+
+.summary div {
+  background: #2b2b3c;
+  border: 1px solid #444;
+  padding: 12px 18px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  font-weight: 600;
+  min-width: 150px;
+  text-align: center;
+  color: #f5f5f5;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #2b2b3c;   /* dark background */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  color: #229bc0;        /* ensure text is light */
+}
+
+thead {
+  background: #3498db;   /* blue header */
+  color: #fff;           /* white text in header */
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  color: #102ed4;        /* force light text in cells */
+}
+
+tr:hover {
+  background: #3a3a4f;   /* slightly lighter hover */
+}
+
+
+/* Stock status colors */
+.Available {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.Low.Stock {
+  color: #f39c12;
+  font-weight: bold;
+}
+
+.Out.of.Stock {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .summary {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 10px;
+    background: #2b2b3c;
+  }
+
+  td {
+    text-align: left;
+    border: none;
+    padding: 6px;
+  }
+
+  th {
+    display: none;
+  }
+}
