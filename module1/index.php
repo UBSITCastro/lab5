@@ -61,6 +61,7 @@ if (isset($_POST['add'])) {
             <th>Stock Quantity</th>
             <th>Unit</th>
             <th>Added Date</th>
+            <th>Action</th>
         </tr>
         <?php
         $items = $itemObj->fetchItems();
@@ -72,6 +73,10 @@ if (isset($_POST['add'])) {
             echo "<td>" . htmlspecialchars($item['stock_qty']) . "</td>";
             echo "<td>" . htmlspecialchars($item['unit']) . "</td>";
             echo "<td>" . htmlspecialchars($item['added_date']) . "</td>";
+            echo "<td>
+                    <a href='edit.php?id=" . htmlspecialchars($item['id']) . "'>Edit</a> | 
+                    <a href='delete.php?id=" . htmlspecialchars($item['id']) . "' onclick=\"return confirm('Are you sure you want to delete this item?');\">Delete</a>
+                  </td>";
             echo "</tr>";
         }
         ?>
