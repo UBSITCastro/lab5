@@ -82,11 +82,11 @@ th, td {
   padding: 10px;
   text-align: center;
   border-bottom: 1px solid #444;
-  color: #102ed4;        /* force light text in cells */
+  color: #e6e7ee;        /* force light text in cells */
 }
 
 tr:hover {
-  background: #3a3a4f;   /* slightly lighter hover */
+  background: #ededf0;   /* slightly lighter hover */
 }
 
 

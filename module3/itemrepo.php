@@ -1,5 +1,4 @@
 <?php
-// ItemRepository.php
 require_once "pdo.php";
 
 class ItemRepository {

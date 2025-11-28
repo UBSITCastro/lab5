@@ -1,5 +1,4 @@
 <?php
-// items.php
 require_once "itemrepo.php";
 
 if (isset($_POST['ajax'])) {
@@ -27,16 +26,6 @@ if (isset($_POST['ajax'])) {
   <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css">
   <title>Inventory Filter</title>
-  <style>
-    .summary { display:flex; gap:1rem; margin:1rem 0; }
-    .summary div { border:1px solid #ccc; padding:0.5rem; border-radius:5px; }
-    table { border-collapse:collapse; width:100%; margin-top:1rem; }
-    th, td { border:1px solid #ddd; padding:8px; }
-    th { background:#f0f0f0; }
-    .Available { color:green; font-weight:bold; }
-    .Low.Stock { color:orange; font-weight:bold; }
-    .Out.of.Stock { color:red; font-weight:bold; }
-  </style>
 </head>
 <body>
   <h1>Inventory Filter</h1>
