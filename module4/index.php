@@ -1,9 +1,3 @@
-<?php
-require_once 'request_handler.php';
-
-$manager = new RequestManager();
-$initialRequests = $manager->getRequests('All');
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +37,7 @@ $initialRequests = $manager->getRequests('All');
             <form id="requestForm" autocomplete="off">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Employee Name</label>
-                    <input type="text" id="requester_name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" placeholder="John Doe" required>
+                    <input type="text" id="requester_name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" placeholder="Name" required>
                 </div>
 
                 <div class="mb-4 relative">
@@ -97,36 +91,6 @@ $initialRequests = $manager->getRequests('All');
                         </tr>
                     </thead>
                     <tbody id="requestTableBody">
-                        <?php 
-                        foreach ($initialRequests as $req): 
-                            $statusColor = 'bg-yellow-200 text-yellow-900';
-                            if ($req['status'] === 'Approved') $statusColor = 'bg-green-200 text-green-900';
-                            if ($req['status'] === 'Rejected') $statusColor = 'bg-red-200 text-red-900';
-                        ?>
-                            <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?= date('m/d/Y', strtotime($req['request_date'])) ?></td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold"><?= htmlspecialchars($req['requester_name']) ?></td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?= htmlspecialchars($req['item_name']) ?></td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?= $req['quantity'] . ' ' . $req['unit'] ?></td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <span class="relative inline-block px-3 py-1 font-semibold leading-tight rounded-full <?= $statusColor ?>">
-                                        <span class="relative"><?= $req['status'] ?></span>
-                                    </span>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <?php if ($req['status'] === 'Pending'): ?>
-                                        <button onclick="processRequest(<?= $req['id'] ?>, 'approve')" class="text-green-600 hover:text-green-900 mr-2">✔</button>
-                                        <button onclick="processRequest(<?= $req['id'] ?>, 'reject')" class="text-red-600 hover:text-red-900">✖</button>
-                                    <?php else: ?>
-                                        <span class="text-gray-400 italic">Processed</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        
-                        <?php if (empty($initialRequests)): ?>
-                            <tr><td colspan="6" class="text-center py-4 text-gray-500">No requests found.</td></tr>
-                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -142,7 +106,10 @@ $initialRequests = $manager->getRequests('All');
 
         searchInput.addEventListener('keyup', function() {
             const term = this.value;
-            if (term.length < 1) { listContainer.classList.add('hidden'); return; }
+            if (term.length < 1) {
+                listContainer.classList.add('hidden');
+                return;
+            }
 
             fetch(`${apiUrl}?action=search&term=${term}`)
                 .then(res => res.json())
@@ -169,7 +136,7 @@ $initialRequests = $manager->getRequests('All');
             
             const stockBox = document.getElementById('stock_info');
             stockBox.classList.remove('hidden');
-            stockBox.classList.remove('border-red-500', 'border-gray-300'); 
+            stockBox.classList.remove('border-red-500', 'border-gray-300');
             
             currentStock = parseInt(item.stock_qty);
             document.getElementById('current_stock_display').innerText = currentStock;
@@ -179,7 +146,7 @@ $initialRequests = $manager->getRequests('All');
             qtyInput.value = '';
             
             if(currentStock <= 0) {
-                 stockBox.classList.add('border-red-500'); 
+                 stockBox.classList.add('border-red-500');
                  qtyInput.disabled = true;
                  qtyInput.placeholder = "Out of Stock";
             } else {
@@ -207,6 +174,7 @@ $initialRequests = $manager->getRequests('All');
 
         document.getElementById('requestForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const data = {
                 name: document.getElementById('requester_name').value,
                 item_id: document.getElementById('selected_item_id').value,
@@ -226,7 +194,7 @@ $initialRequests = $manager->getRequests('All');
                     msgDiv.className = "mt-4 text-center text-sm font-bold text-green-600";
                     document.getElementById('requestForm').reset();
                     document.getElementById('stock_info').classList.add('hidden');
-                    loadRequests('All'); 
+                    loadRequests('All');
                 } else {
                     msgDiv.className = "mt-4 text-center text-sm font-bold text-red-600";
                 }
@@ -240,11 +208,6 @@ $initialRequests = $manager->getRequests('All');
                     const tbody = document.getElementById('requestTableBody');
                     tbody.innerHTML = '';
                     
-                    if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">No requests found.</td></tr>';
-                        return;
-                    }
-
                     data.forEach(req => {
                         let statusColor = 'bg-yellow-200 text-yellow-900';
                         if(req.status === 'Approved') statusColor = 'bg-green-200 text-green-900';
@@ -258,11 +221,9 @@ $initialRequests = $manager->getRequests('All');
                             `;
                         }
 
-                        const dateStr = new Date(req.request_date).toLocaleDateString();
-
                         const row = `
                             <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${dateStr}</td>
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${new Date(req.request_date).toLocaleDateString()}</td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold">${req.requester_name}</td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${req.item_name}</td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${req.quantity} ${req.unit}</td>
@@ -281,6 +242,7 @@ $initialRequests = $manager->getRequests('All');
 
         function processRequest(id, action) {
             if(!confirm(`Are you sure you want to ${action} this request?`)) return;
+
             fetch(`${apiUrl}?action=process_request`, {
                 method: 'POST',
                 body: JSON.stringify({ id: id, process_action: action }),
@@ -289,9 +251,11 @@ $initialRequests = $manager->getRequests('All');
             .then(res => res.json())
             .then(response => {
                 alert(response.message);
-                loadRequests('All'); 
+                loadRequests('All');
             });
         }
+
+        loadRequests('All');
     </script>
 </body>
 </html>
